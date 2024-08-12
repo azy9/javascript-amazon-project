@@ -22,7 +22,7 @@ export function renderOrderSummary() {
       <div class="cart-item-container 
         js-cart-item-container-${matchingItem.id}">
         <div class="delivery-date">
-          Delivery date: ${dateString};
+          Delivery date: ${dateString}
         </div>
 
         <div class="cart-item-details-grid">
