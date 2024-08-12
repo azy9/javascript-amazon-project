@@ -110,10 +110,8 @@ export function renderOrderSummary() {
       link.addEventListener('click', () => {
         const productId = link.dataset.productId;
         removeFromCart(productId);
-        const container = document
-          .querySelector(`.js-cart-item-container-${productId}`);
-        container.remove();
-        updateCartQuantity();
+        renderOrderSummary();
+        renderPaymentSummary()
       })
     })
 
@@ -144,7 +142,7 @@ export function renderOrderSummary() {
             .innerHTML = newQuantity;
         };
         updateCartQuantity()
-        
+        renderPaymentSummary()
       };
       link.addEventListener('click', saveQuantity);
       const input = link.closest('.cart-item-details-grid').querySelector('.js-quantity-input');

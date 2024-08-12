@@ -10,14 +10,14 @@ export function renderPaymentSummary(){
   cart.forEach((cartItem) => {
     const product = getProduct(cartItem.productId)
     productPriceCents += product.priceCents * cartItem.quantity;
-    cartItemQuantity =+ cartItem.quantity;
+    cartItemQuantity += cartItem.quantity;
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId); 
     shippingPriceCents += deliveryOption.priceCents
   })
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
   const taxCents = totalBeforeTaxCents*0.1;
   const totalCents = totalBeforeTaxCents + taxCents;
-
+  console.log(cartItemQuantity);
   const paymentSummaryHTML = `
     <div class="payment-summary-title">
       Order Summary
