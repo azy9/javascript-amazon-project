@@ -4,11 +4,13 @@ import {products, getProduct} from "../../data/products.js";
 import formatCurrency from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
-import { renderPaymentSummary } from "./paymentSummary.js";
+import {renderPaymentSummary} from "./paymentSummary.js";
+import {renderCheckoutHeader} from "./checkoutHeader.js";
 
 export function renderOrderSummary() {
  
-  updateCartQuantity();
+  renderPaymentSummary();
+  renderCheckoutHeader();
   
   let cartSummaryHTML = '';
   cart.forEach((cartItem) => {
@@ -111,7 +113,6 @@ export function renderOrderSummary() {
         const productId = link.dataset.productId;
         removeFromCart(productId);
         renderOrderSummary();
-        renderPaymentSummary()
       })
     })
 
@@ -124,6 +125,7 @@ export function renderOrderSummary() {
         container.classList.add('is-editing-quantity');
       })
     })
+    
   document.querySelectorAll('.js-save-quantity-link').
     forEach((link) => {
       const saveQuantity = () => {
@@ -132,6 +134,7 @@ export function renderOrderSummary() {
           .querySelector(`.js-cart-item-container-${productId}`)
         const newQuantity = Number
           (container.querySelector('.js-quantity-input').value);
+
         if(newQuantity <= 0 || newQuantity > 100){
           alert(`Quantity can't be less than 0 or higher than 100`);
           return;
@@ -141,27 +144,16 @@ export function renderOrderSummary() {
           container.querySelector('.js-quantity-label')
             .innerHTML = newQuantity;
         };
-        updateCartQuantity()
-        renderPaymentSummary()
+        renderPaymentSummary();
+        renderCheckoutHeader();
       };
+
       link.addEventListener('click', saveQuantity);
       const input = link.closest('.cart-item-details-grid').querySelector('.js-quantity-input');
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') saveQuantity();
       });
     });
-
-  function updateCartQuantity(){
-    renderPaymentSummary();
-    const cartQuantity = calculateCartQuantity()
-    if (!cartQuantity) {
-      document.querySelector('.js-checkout-cart-quantity')
-      .innerHTML =`Checkout (<a class="return-to-home-link" href="amazon.html"></a>)`
-    } else {
-      document.querySelector('.js-checkout-cart-quantity')
-      .innerHTML =`Checkout (<a class="return-to-home-link" href="amazon.html">${cartQuantity} items</a>)`
-    }
-  };
 
   document.querySelectorAll('.js-delivery-option')
     .forEach((element) => {
